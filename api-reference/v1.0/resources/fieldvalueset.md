@@ -40,7 +40,11 @@ Lookup fields (like `Author` above) aren't returned by default.
 Instead, the server returns a 'LookupId' field (like `AuthorLookupId` above) referencing the listItem targeted in the lookup.
 The name of the 'LookupId' field is the original field name followed by `LookupId`.
 
-Up to 12 lookup fields may be requested in a single query.
+Graph API does not support retrieving lookup columns for lists with more then 12 lookup columns.
+If a list contains more than 12 lookup collumns, only the first 12 may be returned.
+This limitation cannot be bypassed using pagination, filters, or $select.
+While partial retrieval beyond this limit may occasionally work, it is not officially supported.
+
 The server returns lookup values if your request includes a `select` statement with the fields you need.
 Example:
 
