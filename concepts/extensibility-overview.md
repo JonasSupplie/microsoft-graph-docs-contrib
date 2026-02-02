@@ -997,7 +997,7 @@ The following table compares the extension types. Use this comparison to decide 
 |--|--|--|--|--|
 | Supported resource types | [user][] <br/>[device][] | [user][] <br/> [group][] <br/> [administrativeUnit][] <br/> [application][] <br/>[device][] <br/> [organization][] | [user][] <br/> [group][] <br/> [administrativeUnit][] <br/> [contact][] <br/> [device][] <br/> [event][] (both user and group calendars) <br/> [message][] <br/> [organization][] <br/> [post][] | [user][] <br/> [group][] <!--<br/> [administrativeUnit][]--> <br/> [contact][] <br/> [device][] <br/> [event][]<sup>1</sup> (both user and group calendars) <br/> [message][] <br/> [organization][] <br/> [post][] <br/> [todoTask][] <br/> [todoTaskList][] |
 | Strongly typed | No | Yes | Yes | No |
-| Filterable | Yes | Yes | Yes | No |
+| Filterable | Yes | Yes | Yes<sup>1</sup> | No |
 | Can store a collection | No | Yes | No | Yes |
 | Tied to an "owner" application | No | Yes | Yes | No |
 | Scoping | Assign values to pre-defined properties of the target object instance | Define at application-level then assign to target object instance | Define for the tenant then assign to target object instance | Define and assign on the object instance |
@@ -1005,18 +1005,20 @@ The following table compares the extension types. Use this comparison to decide 
 | Managed via | Microsoft Graph <br/> Exchange admin center | Microsoft Graph | Microsoft Graph | Microsoft Graph |
 | Sync data from on-premises to extensions using [AD connect][] | Yes, for users | [Yes][ADConnect-YES] | No | No |
 | Create [dynamic membership rules][] using custom extension properties and data | [Yes][DynamicMembership-YES] | [Yes][DynamicMembership-YES] | No | No |
-| Usable for customizing token claims | Yes | Yes ([1][DirectoryExt-CustomClaims-Concept], [2][DirectoryExt-CustomClaims-HowTo]) | No | No |
+| Usable for customizing token claims | Yes | Yes ([2][DirectoryExt-CustomClaims-Concept], [3][DirectoryExt-CustomClaims-HowTo]) | No | No |
 | Available in Azure AD B2C | Yes | [Yes][B2CDirectoryExt] | Yes | Yes |
 | Available in Microsoft Entra External ID | Yes | Yes | Yes | Yes |
 | Limits | <li>15 predefined attributes per user or device resource instance | <li>100 extension values per resource instance | <li>Maximum of five definitions per owner app <br/><li> 100 extension values per resource instance (directory objects only) | <li>Two open extensions per creator app per resource instance<sup>2</sup> <br/><li> Max. of 2 Kb per open extension<sup>2</sup><li> For Outlook resources, each open extension is stored in a [MAPI named property][MAPI-named-property]<sup>3</sup> |
 
 > [!NOTE]
 >
-> <sup>1</sup> Due to an existing service limitation, delegates can't create open extension-appended events in shared mailbox calendars. Attempts to do so result in an `ErrorAccessDenied` response.
+>  <sup>1</sup> Filtering on schema extensions is supported only in workloads that index those extensions, such as Entra ID. Exchange Online does not index schema extension properties. While schema extensions can be created and queried using the select parameter, filtering on these properties is not supported in Exchange Online.
+> 
+>  <sup>2</sup> Due to an existing service limitation, delegates can't create open extension-appended events in shared mailbox calendars. Attempts to do so result in an `ErrorAccessDenied` response.
 >
-> <sup>2</sup> These limits on open extensions apply to the following directory resources: **user**, **group**, **device**, <!--**administrativeUnit**,--> and **organization**.
+> <sup>3</sup> These limits on open extensions apply to the following directory resources: **user**, **group**, **device**, <!--**administrativeUnit**,--> and **organization**.
 >
-> <sup>3</sup> Each [open extension](/graph/api/resources/opentypeextension) is stored in a [MAPI named property](/office/client-developer/outlook/mapi/mapi-named-properties), which are a limited resource in a user's mailbox. This limit applies to the following Outlook resources: **message**, **event**, and **contact**
+> <sup>4</sup> Each [open extension](/graph/api/resources/opentypeextension) is stored in a [MAPI named property](/office/client-developer/outlook/mapi/mapi-named-properties), which are a limited resource in a user's mailbox. This limit applies to the following Outlook resources: **message**, **event**, and **contact**
 >
 > You can manage all extensions when you sign in with a work or school account. Additionally, you can manage open extensions for the following resources when signed-in with a personal Microsoft account: **event**, **post**, **group**, **message**, **contact**, and **user**.
 
